@@ -8,8 +8,9 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-jakarta), "Plus Jakarta Sans", -apple-system,
+    BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono: var(--font-jetbrains), "JetBrains Mono", "Fira Code", monospace;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -22,5 +23,832 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+}
+
+/* ============================================================
+   ResearchViz Theme System
+   5 modern presets. All viz components read CSS variables.
+   Body weight 500 (medium) for crisp modern readability.
+   ============================================================ */
+
+/* ── Shared: heavier body weight for all themes ──────────── */
+[data-theme] {
+  font-weight: 500;
+}
+
+/* ── Ink (Default) ──────────────────────────────────────────
+   Bright modern blue. Clean geometric sans. Tech-forward.
+   ──────────────────────────────────────────────────────────── */
+[data-theme="ink"],
+[data-theme] {
+  --viz-primary: #2563eb;
+  --viz-primary-rgb: 37, 99, 235;
+  --viz-primary-light: #dbeafe;
+  --viz-primary-muted: #eff6ff;
+  --viz-bg: #f8fafc;
+  --viz-hero-bg: #2563eb;
+  --viz-surface: #ffffff;
+  --viz-surface-alt: #f8fafc;
+  --viz-border: #e2e8f0;
+  --viz-text: #0f172a;
+  --viz-text-muted: #64748b;
+  --viz-radius: 0.75rem;
+  --viz-font-heading: var(--font-jakarta), "Plus Jakarta Sans", -apple-system, sans-serif;
+}
+
+[data-theme="ink"] {
+  --viz-primary: #2563eb;
+  --viz-primary-rgb: 37, 99, 235;
+}
+
+/* ── Sage ───────────────────────────────────────────────────
+   Dark maroon with warm cream text. Elegant serif headings.
+   Rich, editorial, moody.
+   ──────────────────────────────────────────────────────────── */
+[data-theme="sage"] {
+  --viz-primary: #FEEDD6;
+  --viz-primary-rgb: 254, 237, 214;
+  --viz-primary-light: #6a4444;
+  --viz-primary-muted: #5e3838;
+  --viz-bg: #512E2E;
+  --viz-hero-bg: #3a1f1f;
+  --viz-surface: #5e3838;
+  --viz-surface-alt: #4a2626;
+  --viz-border: #7a5252;
+  --viz-text: #FEEDD6;
+  --viz-text-muted: #c4aa85;
+  --viz-radius: 0.75rem;
+  --viz-font-heading: var(--font-cormorant), "Cormorant Garamond", Georgia, serif;
+}
+
+/* ── Rose ───────────────────────────────────────────────────
+   Warm cream background with vivid red accents.
+   Editorial, bold, classical.
+   ──────────────────────────────────────────────────────────── */
+[data-theme="rose"] {
+  --viz-primary: #CF2431;
+  --viz-primary-rgb: 207, 36, 49;
+  --viz-primary-light: #fde2e4;
+  --viz-primary-muted: #fef5f5;
+  --viz-bg: #FBF4E8;
+  --viz-hero-bg: #CF2431;
+  --viz-surface: #ffffff;
+  --viz-surface-alt: #FBF4E8;
+  --viz-border: #e8dcd0;
+  --viz-text: #2a1f14;
+  --viz-text-muted: #8a7e6f;
+  --viz-radius: 0.875rem;
+  --viz-font-heading: var(--font-serif-display), "DM Serif Display", Georgia, serif;
+}
+
+/* ── Carbon ─────────────────────────────────────────────────
+   Deep forest green with light green text. Geometric headings.
+   Technical, moody, immersive.
+   ──────────────────────────────────────────────────────────── */
+[data-theme="carbon"] {
+  --viz-primary: #EAF9E2;
+  --viz-primary-rgb: 234, 249, 226;
+  --viz-primary-light: #143d33;
+  --viz-primary-muted: #0d3029;
+  --viz-bg: #06251F;
+  --viz-hero-bg: #041a15;
+  --viz-surface: #0d3029;
+  --viz-surface-alt: #061f1a;
+  --viz-border: #1a4a3e;
+  --viz-text: #EAF9E2;
+  --viz-text-muted: #a3c49b;
+  --viz-radius: 0.375rem;
+  --viz-font-heading: var(--font-space-grotesk), "Space Grotesk", -apple-system, sans-serif;
+}
+
+/* ── Violet ─────────────────────────────────────────────────
+   Electric violet. Vibrant, rounded, creative / consumer.
+   ──────────────────────────────────────────────────────────── */
+[data-theme="violet"] {
+  --viz-primary: #7c3aed;
+  --viz-primary-rgb: 124, 58, 237;
+  --viz-primary-light: #ede9fe;
+  --viz-primary-muted: #f5f3ff;
+  --viz-bg: #faf5ff;
+  --viz-hero-bg: #7c3aed;
+  --viz-surface: #ffffff;
+  --viz-surface-alt: #faf5ff;
+  --viz-border: #e9e5f0;
+  --viz-text: #1e1b4b;
+  --viz-text-muted: #6b7280;
+  --viz-radius: 1rem;
+  --viz-font-heading: var(--font-jakarta), "Plus Jakarta Sans", -apple-system, sans-serif;
+}
+
+/* ============================================================
+   Entrance Animations
+   Components fade-in + rise as they stream in.
+   ============================================================ */
+
+@keyframes viz-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes viz-scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes viz-shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.viz-wrapper {
+  animation: viz-fade-up 0.5s ease-out both;
+}
+
+/* Stagger entrance for stat grids */
+.viz-stat-grid .viz-wrapper:nth-child(1) { animation-delay: 0ms; }
+.viz-stat-grid .viz-wrapper:nth-child(2) { animation-delay: 80ms; }
+.viz-stat-grid .viz-wrapper:nth-child(3) { animation-delay: 160ms; }
+.viz-stat-grid .viz-wrapper:nth-child(4) { animation-delay: 240ms; }
+
+/* ============================================================
+   Smart Auto-Layout Rules
+   Uses data-viz attributes + CSS adjacent sibling selectors
+   to auto-group consecutive same-type components.
+   ============================================================ */
+
+/* ── Document flow container ─────────────────────────────────
+   Unified spacing between all components.
+   ──────────────────────────────────────────────────────────── */
+.viz-document-flow {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+/* ── Consecutive StatCards → horizontal grid ────────────────── */
+.viz-document-flow .viz-wrapper[data-component="stat-card"] + .viz-wrapper[data-component="stat-card"] {
+  margin-top: -2.5rem;
+}
+
+.viz-stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+/* ── Consecutive PhaseCards → tighter spacing ───────────────── */
+.viz-document-flow .viz-wrapper[data-component="phase-card"] + .viz-wrapper[data-component="phase-card"] {
+  margin-top: -0.5rem;
+}
+
+/* ── Card hover effect ───────────────────────────────────────
+   Refined lift with shadow bloom on hover.
+   ──────────────────────────────────────────────────────────── */
+.viz-card-hover {
+  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.viz-card-hover:hover {
+  transform: translateY(-3px);
+  box-shadow:
+    0 8px 25px -5px rgba(var(--viz-primary-rgb), 0.12),
+    0 4px 10px -3px rgba(0, 0, 0, 0.06);
+}
+
+/* ── Section header spacing ─────────────────────────────────── */
+.viz-document-flow .viz-wrapper[data-component="section-header"]:not(:first-child) {
+  margin-top: 3rem;
+}
+
+/* ── Hero section: no gap after ─────────────────────────────── */
+.viz-document-flow .viz-wrapper[data-component="hero-section"] + .viz-wrapper {
+  margin-top: -0.5rem;
+}
+
+/* ============================================================
+   Shared Component Utilities
+   ============================================================ */
+
+/* Refined card base: used by all bordered card components */
+.viz-card {
+  border: 1.5px solid var(--viz-border);
+  background-color: var(--viz-surface);
+  border-radius: var(--viz-radius);
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.04),
+    0 1px 2px rgba(0, 0, 0, 0.02);
+}
+
+/* Top-accent card variant — colored top border */
+.viz-card-accent {
+  border-top: 3px solid var(--viz-primary);
+}
+
+/* Dot pattern overlay for hero/callout backgrounds */
+.viz-dot-pattern {
+  background-image: radial-gradient(circle, rgba(255, 255, 255, 0.07) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* Frosted glass effect */
+.viz-glass {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+/* Icon container — small circle bg behind icons */
+.viz-icon-circle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 0.5rem;
+  background-color: var(--viz-primary-muted);
+  flex-shrink: 0;
+}
+
+/* Progress bar animated fill */
+@keyframes viz-bar-fill {
+  from { width: 0; }
+}
+.viz-bar-fill {
+  animation: viz-bar-fill 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* ============================================================
+   Print Styles
+   Clean PDF export via window.print()
+   ============================================================ */
+@media print {
+  /* Hide non-document UI elements */
+  .print\:hidden,
+  header,
+  nav {
+    display: none !important;
+  }
+
+  /* Remove background colors on page */
+  body {
+    background: white !important;
+    color: black !important;
+  }
+
+  /* Full width, no scroll */
+  .h-screen,
+  .h-full {
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  .overflow-y-auto,
+  .overflow-hidden {
+    overflow: visible !important;
+  }
+
+  /* Remove hover effects */
+  .viz-card-hover {
+    transform: none !important;
+    box-shadow: none !important;
+    transition: none !important;
+  }
+
+  /* Ensure white card backgrounds */
+  [data-viz] {
+    box-shadow: none !important;
+  }
+
+  /* Page breaks: break before each section header (except first) */
+  .viz-wrapper[data-component="section-header"]:not(:first-child) {
+    break-before: page;
+  }
+
+  /* Don't break inside components */
+  .viz-wrapper {
+    break-inside: avoid;
+  }
+
+  /* Ensure charts render at full size */
+  .recharts-responsive-container {
+    min-height: 250px !important;
+  }
+
+  /* Remove navigation pills from hero in print */
+  [data-viz="hero-section"] button {
+    display: none !important;
+  }
+
+  /* Make document panel full width */
+  .flex-1 {
+    flex: none !important;
+    width: 100% !important;
+  }
+
+  /* Generous print margins */
+  .viz-document-flow {
+    padding: 0 !important;
+    gap: 1.25rem !important;
+  }
+}
+
+/* ============================================================
+   Landing Page Styles
+   Clean, warm, Copilot-inspired with depth and modern serif logo.
+   ============================================================ */
+
+@keyframes landing-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes landing-gradient-shift {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.landing-root {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse 80% 60% at 10% 90%, rgba(251, 191, 146, 0.35) 0%, transparent 55%),
+    radial-gradient(ellipse 70% 50% at 85% 20%, rgba(196, 148, 234, 0.3) 0%, transparent 55%),
+    radial-gradient(ellipse 60% 55% at 50% 50%, rgba(147, 197, 253, 0.2) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 40% at 20% 20%, rgba(252, 211, 177, 0.25) 0%, transparent 50%),
+    linear-gradient(160deg, #faf5ee 0%, #f3eff8 35%, #eef4fc 65%, #faf5ee 100%);
+  background-size: 200% 200%, 200% 200%, 150% 150%, 180% 180%, 100% 100%;
+  animation: landing-gradient-shift 12s ease-in-out infinite;
+}
+
+/* Subtle noise grain overlay */
+.landing-grain {
+  position: absolute;
+  inset: 0;
+  opacity: 0.2;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+}
+
+.landing-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 680px;
+  padding: 2rem 1.5rem;
+  animation: landing-fade-up 0.7s ease-out both;
+}
+
+/* Logo text — bold serif like the VisualAI screenshot */
+.landing-logo-text {
+  font-family: var(--font-serif-display), Georgia, "Times New Roman", serif;
+  font-size: clamp(2.5rem, 6vw, 3.5rem);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  color: #1a1a1a;
+  margin-bottom: 1.5rem;
+}
+
+/* Heading */
+.landing-heading {
+  font-family: var(--font-jakarta), -apple-system, sans-serif;
+  font-size: clamp(1.25rem, 3vw, 1.75rem);
+  font-weight: 600;
+  line-height: 1.3;
+  color: #44403c;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+/* Input card — deep shadows like Copilot */
+.landing-input-card {
+  width: 100%;
+  background: white;
+  border-radius: 1.25rem;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.06),
+    0 4px 12px rgba(0, 0, 0, 0.05),
+    0 16px 40px rgba(0, 0, 0, 0.04);
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  animation: landing-fade-up 0.7s ease-out 0.1s both;
+  transition: box-shadow 0.3s ease;
+}
+
+.landing-input-card:focus-within {
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.06),
+    0 4px 12px rgba(0, 0, 0, 0.06),
+    0 20px 50px rgba(0, 0, 0, 0.08);
+}
+
+.landing-textarea {
+  width: 100%;
+  resize: none;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: #1a1a1a;
+  font-family: inherit;
+}
+
+.landing-textarea::placeholder {
+  color: #b8b0a4;
+}
+
+.landing-textarea:disabled {
+  opacity: 0.6;
+}
+
+.landing-input-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 0.75rem;
+  border-top: 1px solid #f0ece6;
+  margin-top: 0.5rem;
+}
+
+.landing-run-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1.25rem;
+  border-radius: 0.75rem;
+  background-color: #1a1a1a;
+  color: white;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.15s, box-shadow 0.2s;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.landing-run-btn:hover:not(:disabled) {
+  background-color: #333;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.landing-run-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* Demo suggestions — inline pills */
+.landing-demos {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1.75rem;
+  animation: landing-fade-up 0.7s ease-out 0.2s both;
+}
+
+.landing-demos-label {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #a8a29e;
+  margin-right: 0.25rem;
+}
+
+.landing-demo-pill {
+  padding: 0.5rem 1rem;
+  background: white;
+  border: 1px solid #e8e3dc;
+  border-radius: 2rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #57534e;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.landing-demo-pill:hover:not(:disabled) {
+  background-color: white;
+  border-color: #d6d3cd;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.landing-demo-pill:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Powered by */
+.landing-powered {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  margin-top: 2.5rem;
+  animation: landing-fade-up 0.7s ease-out 0.3s both;
+}
+
+.landing-powered-text {
+  font-size: 0.8rem;
+  color: #a8a29e;
+}
+
+.landing-powered-link {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #57534e;
+  text-decoration: none;
+  transition: color 0.15s;
+}
+
+.landing-powered-link:hover {
+  color: #1a1a1a;
+}
+
+/* ============================================================
+   Workspace Styles
+   Warm cream palette matching the landing page.
+   ============================================================ */
+
+.workspace-root {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: #f5f0ea;
+}
+
+.workspace-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.625rem 1.25rem;
+  border-bottom: 1px solid #e8e3dc;
+  background-color: #f5f0ea;
+}
+
+/* Logo text in workspace header */
+.workspace-logo-text {
+  font-family: var(--font-serif-display), Georgia, serif;
+  font-size: 1.1rem;
+  font-weight: 400;
+  color: #1a1a1a;
+  letter-spacing: -0.01em;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+
+.workspace-logo-text:hover {
+  opacity: 0.7;
+}
+
+.workspace-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.375rem 0.75rem;
+  border-radius: 0.5rem;
+  border: 1px solid #e8e3dc;
+  background: white;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #78716c;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+}
+
+.workspace-btn:hover {
+  background-color: #fefdfb;
+  border-color: #d6d3cd;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+}
+
+/* ── Sidebar ─────────────────────────────────────────────── */
+
+.workspace-sidebar {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  border-right: 1px solid #e8e3dc;
+  background-color: #f5f0ea;
+}
+
+@media (min-width: 768px) {
+  .workspace-sidebar {
+    width: 360px;
+    min-width: 360px;
+  }
+}
+
+/* ── Activity Feed (faded scrolling messages) ─────────────── */
+
+.workspace-activity {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+  padding: 0.75rem 1rem;
+}
+
+.activity-feed {
+  height: 100%;
+  position: relative;
+}
+
+.activity-feed-scroll {
+  height: 100%;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  /* Fade mask: top fades to transparent, bottom visible */
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    black 25%,
+    black 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    black 25%,
+    black 100%
+  );
+  padding-top: 2rem;
+}
+
+/* Hide scrollbar for cleaner look */
+.activity-feed-scroll::-webkit-scrollbar {
+  display: none;
+}
+.activity-feed-scroll {
+  scrollbar-width: none;
+}
+
+.activity-entry {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.375rem 0;
+  animation: landing-fade-up 0.3s ease-out both;
+}
+
+.activity-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background-color: #d6d3cd;
+  flex-shrink: 0;
+}
+
+.activity-entry-user .activity-dot {
+  background-color: #44403c;
+}
+
+.activity-entry-ai .activity-dot {
+  background-color: #a8a29e;
+}
+
+.activity-dot-live {
+  background-color: #2563eb;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+.activity-text {
+  font-size: 0.75rem;
+  line-height: 1.5;
+  color: #78716c;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.activity-entry-user .activity-text {
+  color: #57534e;
+  font-weight: 500;
+}
+
+.activity-entry-live .activity-text {
+  color: #2563eb;
+  font-weight: 500;
+}
+
+/* ── Workspace Input ─────────────────────────────────────── */
+
+.workspace-input-area {
+  padding: 0.75rem 1rem;
+  border-top: 1px solid #e8e3dc;
+}
+
+.workspace-input-card {
+  background: white;
+  border-radius: 0.875rem;
+  padding: 0.75rem;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.04),
+    0 4px 12px rgba(0, 0, 0, 0.03);
+  transition: box-shadow 0.2s ease;
+}
+
+.workspace-input-card:focus-within {
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.04),
+    0 6px 20px rgba(0, 0, 0, 0.06);
+}
+
+.workspace-textarea {
+  width: 100%;
+  resize: none;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  color: #1a1a1a;
+  font-family: inherit;
+}
+
+.workspace-textarea::placeholder {
+  color: #b8b0a4;
+}
+
+.workspace-textarea:disabled {
+  opacity: 0.6;
+}
+
+.workspace-input-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 0.375rem;
+}
+
+.workspace-input-hint {
+  font-size: 0.625rem;
+  color: #b8b0a4;
+}
+
+.workspace-send-btn {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.5rem;
+  background-color: #1a1a1a;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.15s, opacity 0.15s;
+}
+
+.workspace-send-btn:hover:not(:disabled) {
+  background-color: #333;
+}
+
+.workspace-send-btn:disabled {
+  opacity: 0.25;
+  cursor: not-allowed;
 }
