@@ -30,9 +30,10 @@ function PhaseCard({
         {/* Phase number badge */}
         {phaseNumber != null && (
           <div
-            className="flex h-14 w-14 shrink-0 items-center justify-center text-xl font-black text-white"
+            className="flex h-14 w-14 shrink-0 items-center justify-center text-xl font-black"
             style={{
-              backgroundColor: "var(--viz-primary)",
+              backgroundColor: "var(--viz-accent-bg)",
+              color: "var(--viz-accent-fg)",
               borderRadius: "var(--viz-radius)",
               boxShadow: "0 4px 12px rgba(var(--viz-primary-rgb), 0.25)",
             }}

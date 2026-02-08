@@ -39,10 +39,11 @@ function InsightCallout({
   return (
     <div
       data-viz="insight-callout"
-      className="relative overflow-hidden px-8 py-8 text-white"
+      className="relative overflow-hidden px-8 py-8"
       style={{
-        backgroundColor: "var(--viz-primary)",
+        backgroundColor: "var(--viz-accent-bg)",
         borderRadius: "var(--viz-radius)",
+        color: "var(--viz-accent-fg)",
       }}
     >
       {/* Dot pattern texture */}
@@ -59,18 +60,27 @@ function InsightCallout({
 
       <div className="relative z-10">
         <div className="flex items-center gap-3">
-          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-white/15">
-            <IconComponent className="h-5 w-5 text-white" />
+          <div
+            className="flex h-9 w-9 items-center justify-center rounded-lg"
+            style={{ backgroundColor: "rgba(255,255,255,0.15)" }}
+          >
+            <IconComponent
+              className="h-5 w-5"
+              style={{ color: "var(--viz-accent-fg)" }}
+            />
           </div>
           <h3
             className="text-lg font-black tracking-tight"
-            style={{ fontFamily: "var(--viz-font-heading)" }}
+            style={{ fontFamily: "var(--viz-font-heading)", color: "var(--viz-accent-fg)" }}
           >
             {title || ""}
           </h3>
         </div>
         {content && (
-          <p className="mt-4 text-base leading-relaxed text-white/85">
+          <p
+            className="mt-4 text-base leading-relaxed"
+            style={{ color: "var(--viz-accent-fg)", opacity: 0.85 }}
+          >
             {content}
           </p>
         )}

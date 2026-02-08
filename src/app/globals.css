@@ -48,6 +48,8 @@ body {
   --viz-primary-muted: #eff6ff;
   --viz-bg: #f8fafc;
   --viz-hero-bg: #2563eb;
+  --viz-accent-bg: #2563eb;
+  --viz-accent-fg: #ffffff;
   --viz-surface: #ffffff;
   --viz-surface-alt: #f8fafc;
   --viz-border: #e2e8f0;
@@ -73,6 +75,8 @@ body {
   --viz-primary-muted: #5e3838;
   --viz-bg: #512E2E;
   --viz-hero-bg: #3a1f1f;
+  --viz-accent-bg: #3a1f1f;
+  --viz-accent-fg: #FEEDD6;
   --viz-surface: #5e3838;
   --viz-surface-alt: #4a2626;
   --viz-border: #7a5252;
@@ -93,6 +97,8 @@ body {
   --viz-primary-muted: #fef5f5;
   --viz-bg: #FBF4E8;
   --viz-hero-bg: #CF2431;
+  --viz-accent-bg: #CF2431;
+  --viz-accent-fg: #ffffff;
   --viz-surface: #ffffff;
   --viz-surface-alt: #FBF4E8;
   --viz-border: #e8dcd0;
@@ -113,6 +119,8 @@ body {
   --viz-primary-muted: #0d3029;
   --viz-bg: #06251F;
   --viz-hero-bg: #041a15;
+  --viz-accent-bg: #041a15;
+  --viz-accent-fg: #EAF9E2;
   --viz-surface: #0d3029;
   --viz-surface-alt: #061f1a;
   --viz-border: #1a4a3e;
@@ -132,6 +140,8 @@ body {
   --viz-primary-muted: #f5f3ff;
   --viz-bg: #faf5ff;
   --viz-hero-bg: #7c3aed;
+  --viz-accent-bg: #7c3aed;
+  --viz-accent-fg: #ffffff;
   --viz-surface: #ffffff;
   --viz-surface-alt: #faf5ff;
   --viz-border: #e9e5f0;
@@ -293,9 +303,16 @@ body {
 
 /* ============================================================
    Print Styles
-   Clean PDF export via window.print()
+   Full-color PDF export via window.print()
    ============================================================ */
 @media print {
+  /* Force browsers to print all background colors and images */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+
   /* Hide non-document UI elements */
   .print\:hidden,
   header,
@@ -303,10 +320,9 @@ body {
     display: none !important;
   }
 
-  /* Remove background colors on page */
+  /* Keep body neutral but don't strip colors from components */
   body {
     background: white !important;
-    color: black !important;
   }
 
   /* Full width, no scroll */
@@ -321,16 +337,10 @@ body {
     overflow: visible !important;
   }
 
-  /* Remove hover effects */
+  /* Remove hover effects but keep colors */
   .viz-card-hover {
     transform: none !important;
-    box-shadow: none !important;
     transition: none !important;
-  }
-
-  /* Ensure white card backgrounds */
-  [data-viz] {
-    box-shadow: none !important;
   }
 
   /* Page breaks: break before each section header (except first) */
@@ -350,6 +360,12 @@ body {
 
   /* Remove navigation pills from hero in print */
   [data-viz="hero-section"] button {
+    display: none !important;
+  }
+
+  /* Hide sticky nav bar in print */
+  .sticky {
+    position: relative !important;
     display: none !important;
   }
 
